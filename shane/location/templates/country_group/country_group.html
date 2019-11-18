@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="UTF-8">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<div id="chartContainer">
+  <script src="/lib/d3.v4.3.0.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
+  <script type="text/javascript">
+    var svg = dimple.newSvg("#chartContainer", 590, 400);
+    d3.tsv("/data/example_data.tsv", function (data) {
+      var myChart = new dimple.chart(svg, data);
+      myChart.setBounds(20, 20, 460, 360)
+      myChart.addMeasureAxis("p", "Unit Sales");
+      var ring = myChart.addSeries("Owner", dimple.plot.pie);
+      ring.innerRadius = "50%";
+      myChart.addLegend(500, 20, 90, 300, "left");
+      myChart.draw();
+    });
+  </script>
+</div>
+
+<body>
+
+    <h1>country_group page</h1>
+    <a href="/location/{{list.0.location}}">country_group</a> <a href="/location/visa_group/{{list.0.location}}">visa_group</a> <a href="/location/age_group/{{list.0.location}}">age_group</a><br>
+    {% for country_group in list %}
+    {{ country_group.gender }} {{ country_group.country }} {{ country_group.country_total }}<br>
+    {% endfor %}
+
+</body>
+</html>

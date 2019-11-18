@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="UTF-8">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>login page</h1>
+
+    <br>
+
+    <form action="check" method="post">
+        {% csrf_token %}
+        ID <input type="text" name="mid"><br>
+        PW <input type="password" name="pw"><br>
+        <input type="submit" value="로그인">
+    </form>
+    <a href="/">메인으로</a>
+
+</body>
+</html>

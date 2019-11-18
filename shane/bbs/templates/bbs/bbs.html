@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="UTF-8">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h1>comunity bulletin board</h1>
+
+    <form action="">
+        <select name="country">
+            <option value="전체">전체</option>
+            {% for country in list2 %}
+            <option value="{{country.country}}">{{country.country}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="게시판 이동">
+    </form>
+
+    <table border="1">
+        <tr>
+            <td>순번</td>
+            <td>제목</td>
+            <td>작성자</td>
+            <td>날짜</td>
+        </tr>
+        {% for bbs in list %}
+        <tr>
+            <td>{{bbs.id}}</td>
+            <td><a href="content/{{bbs.id}}">{{bbs.title}}</a></td>
+            <td>{{bbs.user_nick}}&nbsp;&nbsp;{{bbs.user_country}}</td>
+            <td>{{bbs.udate}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% if request.session.mid == None %}
+    please login your id<br>
+    {% else %}
+    <a href="/bbs/postPage/{{country}}">post</a><br>
+    {% endif %}
+    <a href="/">메인으로</a>
+
+</body>
+</html>

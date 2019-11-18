@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="UTF-8">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>member_info page</h1>
+
+    <br>
+
+    <form action="/member/update" method="post">
+        {% csrf_token %}
+        ID <input type="hidden" name="mid" value="{{info.mid}}">{{info.mid}}<br>
+        PW <input type="password" name="pw" value="{{info.pw}}"><br>
+        Nickname <input type="text" name="nickname" value="{{info.nickname}}"><br>
+        gender <input type="text" name="gender" value="{{info.gender}}"><br>
+        country <input type="text" name="country" value="{{info.country}}"><br>
+        email <input type="text" name="email" value="{{info.email}}"><br>
+        <input type="submit" value="수정">
+    </form>
+     <a href="/">메인으로</a>
+
+</body>
+</html>

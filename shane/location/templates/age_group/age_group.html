@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="UTF-8">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h1>age_group page</h1>
+    <a href="/location/{{list.0.location}}">country_group</a> <a href="/location/visa_group/{{list.0.location}}">visa_group</a> <a href="/location/age_group/{{list.0.location}}">age_group</a><br>
+    {% for age_group in list %}
+    {{ age_group.gender }} {{ age_group.age_arange }} {{ age_group.age_total }}<br>
+    {% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="UTF-8">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>join page</h1>
+
+    <br>
+
+<!--     <form action="" method="post" enctype="multipart/form-data">-->
+<!--        {% csrf_token %}-->
+<!--        {{ form.as_p }}-->
+<!--        <input type="submit" value="가입">-->
+<!--    </form>-->
+
+    <form action="insert" method="post">
+        {% csrf_token %}
+        ID <input type="text" name="mid"><br>
+        PW <input type="password" name="pw"><br>
+        Nickname <input type="text" name="nickname"><br>
+        Gender <input type="text" name="gender"><br>
+        Country <select name="country">
+            <option value="전체" selected>전체</option>
+            {% for country in list %}
+            <option value="{{country.country}}">{{country.country}}</option>
+            {% endfor %}
+        </select><br>
+        Email <input type="text" name="email"><br>
+        <input type="submit" value="가입">
+    </form>
+    <a href="/">메인으로</a>
+
+</body>
+</html>
