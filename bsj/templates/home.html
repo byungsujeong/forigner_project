@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>home</h1>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}
+{% block script2 %}
+<div id="map" style="width:100%;height:700px;"></div>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b4ec527c456f6c18165bc07b9e5f9d50"></script>
+<script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.54130, 126.98267), // 지도의 중심좌표
+            level: 9, // 지도의 확대 레벨
+            mapTypeId: kakao.maps.MapTypeId.ROADMAP // 지도종류
+        };
+    // 지도를 생성한다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+    // 마우스 드래그와 모바일 터치를 이용한 지도 이동을 막는다
+    map.setDraggable(true);
+    // 마우스 휠과 모바일 터치를 이용한 지도 확대, 축소를 막는다
+    map.setZoomable(false);
+    // 지도 영역 변화 이벤트를 등록한다
+    kakao.maps.event.addListener(map, 'bounds_changed', function () {
+        var mapBounds = map.getBounds(),
+            message = '지도의 남서쪽, 북동쪽 영역좌표는 ' +
+                mapBounds.toString() + '입니다.';
+        console.log(message);
+    });
+    var positions = [
+        {
+            title: '강남구',
+            content: '<div style="padding:5px;"><br><a href="/location/강남구" style="color:blue">강남구</a></div>',
+            latlng: new kakao.maps.LatLng(37.496881433189756, 127.04606796738278)
+        },
+        {
+            title: '동작구',
+            content: '<div style="padding:5px;"><br><a href="/location/동작구" style="color:black">동작구</a></div>',
+            latlng: new kakao.maps.LatLng(37.49802333630129, 126.93062983201332)
+        },
+        {
+            title: '관악구',
+            content: '<div style="padding:5px;"><br><a href="/location/관안구" style="color:blue">관안구</a></div>',
+            latlng: new kakao.maps.LatLng(37.472082582273266, 126.94657090508751)
+        },
+        {
+            title: '금천구',
+            content: '<div style="padding:5px;"><br><a href="/location/금천구" style="color:blue">금천구</a></div>',
+            latlng: new kakao.maps.LatLng(37.46484264459002, 126.89810595611942)
+        },
+        {
+            title: '용산구',
+            content: '<div style="padding:5px;"><br><a href="/location/용산구" style="color:blue">용산구</a></div>',
+            latlng: new kakao.maps.LatLng(37.529289228588, 126.98250951060099)
+        },
+        {
+            title: '강동구',
+            content: '<div style="padding:5px;"><br><a href="/location/강동구" style="color:blue">강동구</a></div>',
+            latlng: new kakao.maps.LatLng(37.54764120657503, 127.15505391490643)
+        },
+        {
+            title: '중량구',
+            content: '<div style="padding:5px;"><br><a href="/location/중량구" style="color:blue">중량구</a></div>',
+            latlng: new kakao.maps.LatLng(37.590090753773055, 127.09101088414413)
+        },
+        {
+            title: '동대문구',
+            content: '<div style="padding:5px;"><br><a href="/location/동대문구" style="color:blue">동대문구</a></div>',
+            latlng: new kakao.maps.LatLng(37.58348182534276, 127.05477379453937)
+        },
+        {
+            title: '성북구 ',
+            content: '<div style="padding:5px;"><br><a href="/location/성북구" style="color:blue">성북구</a></div>',
+            latlng: new kakao.maps.LatLng(37.58897027937629, 127.02325622949496)
+        },
+        {
+            title: '은평구',
+            content: '<div style="padding:5px;"><br><a href="/location/은평구" style="color:blue">은평구</a></div>',
+            latlng: new kakao.maps.LatLng(37.622971048669, 126.92648411102395)
+        },
+        {
+            title: '도봉구',
+            content: '<div style="padding:5px;"><br><a href="/location/도봉구" style="color:blue">도봉구</a></div>',
+            latlng: new kakao.maps.LatLng(37.667462491970106, 127.03080668962137)
+        },
+        {
+            title: '노원구',
+            content: '<div style="padding:5px;"><br><a href="/location/노원구" style="color:blue">노원구</a></div>',
+            latlng: new kakao.maps.LatLng(37.65518981426001, 127.07422758978718)
+        },
+        {
+            title: '서대문',
+            content: '<div style="padding:5px;"><br><a href="/location/서대문구" style="color:blue">서대문구</a></div>',
+            latlng: new kakao.maps.LatLng(37.579500, 126.936775)
+        },
+        {
+            title: '종로구',
+            content: '<div style="padding:5px;"><br><a href="/location/종로구" style="color:blue">종로</a></div>',
+            latlng: new kakao.maps.LatLng(37.576421, 126.978251)
+        },
+        {
+            title: '중구',
+            content: '<div style="padding:5px;"><br><a href="/location/중구" style="color:blue">중구</a></div>',
+            latlng: new kakao.maps.LatLng(37.565421, 126.998328)
+        },
+        {
+            title: '광진구',
+            content: '<div style="padding:5px;"><br><a href="/location/광진구" style="color:blue">광진구</a></div>',
+            latlng: new kakao.maps.LatLng(37.540286, 127.083108)
+        },
+        {
+            title: '서초구',
+            content: '<div style="padding:5px;"><br><a href="/location/서초구" style="color:blue">서초</a></div>',
+            latlng: new kakao.maps.LatLng(37.486507, 127.031713)
+        },
+        {
+            title: '구로구',
+            content: '<div style="padding:5px;"><br><a href="/location/광진구" style="color:blue">광진구</a></div>',
+            latlng: new kakao.maps.LatLng(37.497866, 126.887141)
+        },
+        {
+            title: '영등포',
+            content: '<div style="padding:5px;"><br><a href="/location/영등포" style="color:blue">영등</a></div>',
+            latlng: new kakao.maps.LatLng(37.530494, 126.896505)
+        },
+        {
+            title: '마포구',
+            content: '<div style="padding:5px;"><br><a href="/location/마포구" style="color:blue">마포구</a></div>',
+            latlng: new kakao.maps.LatLng(37.567029, 126.907272)
+        },
+        {
+            title: '서초구',
+            content: '<div style="padding:5px;"><br><a href="/location/서초구" style="color:blue">서초구</a></div>',
+            latlng: new kakao.maps.LatLng(37.486507, 127.031713)
+        },
+        {
+            title: '은평구',
+            content: '<div style="padding:5px;"><br><a href="/location/은평구" style="color:blue">은평구</a></div>',
+            latlng: new kakao.maps.LatLng(37.605950, 126.927752)
+        },
+        {
+            title: '양천구',
+            content: '<div style="padding:5px;"><br><a href="/location/양천구" style="color:blue">양천구</a></div>',
+            latlng: new kakao.maps.LatLng(37.518714, 126.866776)
+        },
+        {
+            title: '동작구',
+            content: '<div style="padding:5px;"><br><a href="/location/동작" style="color:blue">동작구</a></div>',
+            latlng: new kakao.maps.LatLng(37.514066, 126.941291)
+        },
+        {
+            title: '성동구',
+            content: '<div style="padding:5px;"><br><a href="/location/성동구" style="color:blue">성동구</a></div>',
+            latlng: new kakao.maps.LatLng(37.564399, 127.037655)
+        }
+    ];
+    var imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+    for (var i = 0; i < positions.length; i++) {
+        // 마커 이미지의 이미지 크기 입니다
+        var imageSize = new kakao.maps.Size(24, 35);
+        // 마커 이미지를 생성합니다
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+            map: map, // 마커를 표시할 지도
+            position: positions[i].latlng, // 마커를 표시할 위치
+            tittle: positions[i].title,
+            image: markerImage
+        });
+        var infowindow = new kakao.maps.InfoWindow({
+            content: positions[i].content // 인포윈도우에 표시할 내용
+        });
+        kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+    }
+    function makeOverListener(map, marker, infowindow) {
+        return function () {
+            infowindow.open(map, marker);
+        };
+    }
+</script>
+{% endblock %}
