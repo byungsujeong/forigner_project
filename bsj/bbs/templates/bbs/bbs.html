@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block script %}
+<style>
+    #post{
+        color: black
+    }
+    #post:hover{
+        text-decoration: None
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <form action="">
+                <select name="country">
+                    <option value="{{country}}" selected>{{country}}</option>
+                    <option value="전체">전체</option>
+                    {% for country in list2 %}
+                    <option value="{{country.country}}">{{country.country}}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="게시판 이동">
+                {% if request.session.mid == None %}
+                please login your id<br>
+                {% else %}
+                <button type="button" onclick="country()"><a href="/bbs/postPage/{{country}}" id="post">post</a></button>
+                <br>
+                {% endif %}
+            </form>
+
+            <table border="1">
+                <tr>
+                    <td>순번</td>
+                    <td>제목</td>
+                    <td>작성자</td>
+                    <td>날짜</td>
+                </tr>
+                {% for bbs in list %}
+                <tr>
+                    <td>{{bbs.id}}</td>
+                    <td><a href="content/{{bbs.id}}">{{bbs.title}}</a></td>
+                    <td>{{bbs.user_nick}}&nbsp;&nbsp;{{bbs.user_country}}</td>
+                    <td>{{bbs.udate}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}

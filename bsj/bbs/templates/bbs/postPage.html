@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <form action="/bbs/post" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <td>Title</td>
+                        <td><input type="text" name="title"></td>
+                    </tr>
+                    <tr>
+                        <td>Content</td>
+                        <td><textarea name="content"></textarea></td>
+                    </tr>
+                    {% if country == '전체' %}
+                    <tr>
+                        <td>Country</td>
+                        <td>
+                            <select name="country">
+                                {% for country in list %}
+                                <option value="{{country.country}}">{{country.country}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <input type="hidden" name="country" value="{{country}}">
+                    {% endif %}
+                    <input type="hidden" name="mid" value="{{request.session.mid}}">
+                    <tr>
+                        <td colspan="2"><input type="submit" value="post"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}
