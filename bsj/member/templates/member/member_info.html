@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>member_info page</h1>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <table>
+                <form action="/member/update" method="post">
+                    {% csrf_token %}
+                <tr>
+                    <td>ID</td>
+                    <td><input type="hidden" name="mid" value="{{info.mid}}">{{info.mid}}</td>
+                </tr>
+                <tr>
+                    <td>PW</td>
+                    <td><input type="password" name="pw" value="{{info.pw}}"></td>
+                </tr>
+                <tr>
+                    <td>Nickname</td>
+                    <td><input type="text" name="nickname" value="{{info.nickname}}"></td>
+                </tr>
+                <tr>
+                    <td>gender</td>
+                    <td><input type="text" name="gender" value="{{info.gender}}"></td>
+                </tr>
+                <tr>
+                    <td>country</td>
+                    <td><input type="text" name="country" value="{{info.country}}"></td>
+                </tr>
+                <tr>
+                    <td>email</td>
+                    <td><input type="text" name="email" value="{{info.email}}"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="수정"></td>
+                </tr>
+                </form>
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}
