@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block script %}
+    <style>
+        #textarea_style{
+            resize:none;
+            width:100%;
+            height:100px
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <form action="/bbs/content/do_update" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table border="1" width="100%" height="500">
+                    <tr>
+                        <td width="10%" height="50" align="center">Title</td>
+                        <td><input type="text" name="title" value="{{ list.title }}" size="100%" style=height:100%></td>
+                    </tr>
+                    <tr>
+                        <td align="center">Content</td>
+                        <td><textarea name="content" id="textarea_style" style=height:100%>{{ list.content }}</textarea></td>
+                    </tr>
+                </table>
+                <table width="110%">
+                    <tr>
+                        <td colspan="2" align="right"><input type="submit" value="update" style=height:50px;width:100px;></td>
+                    </tr>
+                </table>
+                <input type="hidden" name="id" value="{{ list.id }}">
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}
