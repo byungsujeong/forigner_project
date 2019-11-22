@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block script %}
+<script>
+    $(function(){
+        $("#delete").click(function(){
+            var mid = $("#mid").val()
+            var flag = confirm('continue?');
+                if(flag==true){
+                    location.href="/member/delete?mid="+mid
+                }else{
+                    return false;
+                }
+        })
+    })
+</script>
+{% endblock %}
+{% block content %}
+    <h1>member_info page</h1>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <table align="center">
+                <form action="/member/update" method="post">
+                    {% csrf_token %}
+                <tr>
+                    <td align="right">ID</td>
+                    <td><input type="hidden" id="mid" name="mid" value="{{info.mid}}">{{info.mid}}</td>
+                </tr>
+                <tr>
+                    <td align="right">PW</td>
+                    <td><input type="password" name="pw" value="{{info.pw}}"></td>
+                </tr>
+                <tr>
+                    <td align="right">Nickname</td>
+                    <td><input type="text" name="nickname" value="{{info.nickname}}"></td>
+                </tr>
+                <tr>
+                    <td align="right">gender</td>
+                    <td><input type="text" name="gender" value="{{info.gender}}"></td>
+                </tr>
+                <tr>
+                    <td align="right">country</td>
+                    <td>
+                        <select id="country" name="country">
+                            <option value="{{info.country}}" selected>{{info.country}}</option>
+                            <option value="한국">한국</option>
+                            {% for country in list %}
+                            <option value="{{country.country}}">{{country.country}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">email</td>
+                    <td><input type="text" name="email" value="{{info.email}}"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" value="수정">&nbsp;&nbsp;&nbsp;<button type="button" id="delete">탈회</button></td>
+                </tr>
+                </form>
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}

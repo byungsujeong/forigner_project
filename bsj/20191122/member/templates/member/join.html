@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block script %}
+<script src="/static/jquery-3.4.1.js"></script>
+<script>
+        $(function() {
+            var count = 0;
+            var count2 = 0;
+            var count3 = 0;
+            var count4 = 0;
+            <!-- email형식 정의 -->
+            var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+
+            $("#mid").keyup(function() { //id 중복확인 체크 결과에 따른 메시지 출력
+                var mid = $("#mid").val()
+                    $.ajax({
+                        url: "overlapcheck",
+                        data: {
+                            mid: mid
+                        },
+                        success: function(result) {
+                            count = result;
+                            if (count == 1) {
+                                $("#idcheck").html("<font color = red>중복된 아이디 입니다</font>");
+                            } else {
+                                $("#idcheck").html("<font color = green>사용가능한 아이디 입니다</font>");
+                            }
+                        }
+                    });
+            });
+
+            $("#pwc").keyup(function() { //pw와 pw재확인 값에 따른 출력 메세지 설정
+                if ($("#pw").val() == $("#pwc").val()) {
+                    $("#pwcheck").html(
+                        "<font color = green>패스워드가 일치합니다.</font>");
+                    count2 = 0;
+                } else {
+                    $("#pwcheck").html(
+                        "<font color = red>패스워드가 일치하지 않습니다.</font>");
+                    count2 = 1;
+                }
+            });
+
+            $("#email").keyup(function() { //이메일 형식에 따른 출력 메세지 설정
+                if (exptext.test($("#email").val()) == false) {
+                    $("#emailcheck").html(
+                        "<font color = red>이메일 형식을 확인해주세요</font>");
+                    count4 = 1;
+                } else {
+                    $("#emailcheck").html(
+                        "<font color = green>바른 형식입니다.</font>");
+                    count4 = 0;
+                }
+            });
+
+            $("#join").click(function() { // 위 조건에 따라 count가 변경 된 값이 있으면 회원가입 안되도록 정의
+                if (count == 1) {
+                    alert("중복된 아이디는 회원가입하실 수 없습니다.");
+                    return false;
+                } else if (count2 == 1) {
+                    alert("비밀번호 재확인이 필요합니다.");
+                    return false;
+                } else if ($("#id").val() == "" || $("#pw").val() == "" || $("#pwc").val() == "" || $("#nickname").val() == "" ||
+                    $("#gender").val() == "" || $("#email").val() == "") {
+                    alert("모든 정보들을 입력해야 합니다.")
+                    return false;
+                } else if (count4 == 1){
+                    alert("이메일 형식을 확인해주세요.");
+                    return false;
+                }
+            });
+        });
+</script>
+{% endblock %}
+{% block content %}
+    <h1>join page</h1>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <table align="center">
+                <form action="insert" method="post">
+                    {% csrf_token %}
+                <tr>
+                    <td align="right">ID</td>
+                    <td><input type="text" id="mid" name="mid"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td id="idcheck"></td>
+                </tr>
+                <tr>
+                    <td align="right">PW</td>
+                    <td><input type="password" id="pw" name="pw"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td id="pwcheck"></td>
+                </tr>
+                <tr>
+                    <td align="right">PW Confirm</td>
+                    <td><input type="password" id="pwc" name="pwc"></td>
+                </tr>
+                <tr>
+                    <td align="right">NcikName</td>
+                    <td><input type="text" id="nickname" name="nickname"></td>
+                </tr>
+                <tr>
+                    <td align="right">Gender</td>
+                    <td>
+                        <select id="gender" name="gender">
+                            <option value="남">남</option>
+                            <option value="여">여</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">Country</td>
+                    <td>
+                        <select id="country" name="country">
+                        <option value="한국" selected>한국</option>
+                        {% for country in list %}
+                        <option value="{{country.country}}">{{country.country}}</option>
+                        {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">Email</td>
+                    <td><input type="text" id="email" name="email"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td id="emailcheck"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" id="join" value="가입"></td>
+                </tr>
+                </form>
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}
