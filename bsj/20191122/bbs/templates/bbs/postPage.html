@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block script %}
+    <style>
+        #textarea_style{
+            resize:none;
+            width:100%;
+            height:100px
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <form action="/bbs/post" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table border="1" width="100%" height="500">
+                    <tr>
+                        <td width="10%" height="50" align="center">Title</td>
+                        <td><input type="text" name="title" size="100%" style=height:100%></td>
+                    </tr>
+                    <tr>
+                        <td align="center">Content</td>
+                        <td><textarea name="content" id="textarea_style" style=height:100%></textarea></td>
+                    </tr>
+                    <!-- 나라 선택을 안하고 글작성 페이지에 온 경우 나라 선택할 수 있도록 combobox생성 if -->
+                    {% if country == '전체' %}
+                    <tr>
+                        <td height="50" align="center">Country</td>
+                        <td>
+                            <select name="country" style="height:100%; width:100%;">
+                                {% for country in list %}
+                                <option value="{{country.country}}">{{country.country}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <input type="hidden" name="country" value="{{country}}">
+                    {% endif %}
+                    <input type="hidden" name="mid" value="{{request.session.mid}}">
+                </table>
+
+                <table width="110%">
+                    <tr>
+                        <td colspan="2" align="right"><input type="submit" value="post" style=height:50px;width:100px;></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}
