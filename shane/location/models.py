@@ -7,6 +7,7 @@ class Country_group(models.Model):
     country = models.CharField(max_length=100)
     country_total = models.IntegerField(default=0)
 
+
     def __str__(self):
         return self.location + ', ' + self.gender + ', ' + self.country + ', ' + str(self.country_total)
 
