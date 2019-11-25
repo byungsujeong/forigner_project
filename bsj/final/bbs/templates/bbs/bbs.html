@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block script %}
+<style>
+    #abtn{
+        color: black
+    }
+    #abtn:hover{
+        text-decoration: None
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <!-- 나라 선택 후 submit 시 현재페이지로 다시 이동하기 위한  action -->
+            <form action="">
+                <select name="country">
+                    <option value="{{country}}" selected>{{country}}</option>
+                    <option value="전체">전체</option>
+                    {% for country in list2 %}
+                    <option value="{{country.country}}">{{country.country}}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="게시판 이동">
+                <!-- 로그인 시에만 글작성 할 수 있도록 if -->
+                {% if request.session.mid == None %}
+                {% else %}
+                <button type="button"><a href="/bbs/postPage/{{country}}" id="abtn">post</a></button>
+                {% endif %}
+            </form>
+            <!-- 게시물 리스트 -->
+            <table border="1" width="100%">
+                <tr>
+                    <td>순번</td>
+                    <td width="50%">제목</td>
+                    <td>작성자</td>
+                    <td>날짜</td>
+                </tr>
+                {% for bbs in list %}
+                <tr>
+                    <td>{{bbs.id}}</td>
+                    <!-- 게시물 클릭 시 해당 게시물 상세페이지로 넘어가도록 a태그 -->
+                    <!-- 경로 맨뒤의 0은 게시물 상세 페이지에서 댓글 form을 위해 flag값 default를0으로 지정 -->
+                    <td><a href="content/{{bbs.id}}/0">{{bbs.title}}</a></td>
+                    <td>{{bbs.user_nick}}&nbsp;&nbsp;{{bbs.user_country}}</td>
+                    <td>{{bbs.udate}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}

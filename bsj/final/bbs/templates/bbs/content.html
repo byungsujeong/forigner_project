@@ -1,0 +1,117 @@
+{% extends 'base.html'%}
+{% block script %}
+    <style>
+        #content_style{
+            vertical-align : top
+        }
+        .textarea_style{
+            resize:none;
+            width:100%;
+            height:70px
+        }
+        .abtn{
+            color: black
+        }
+        .abtn:hover{
+            text-decoration: None
+        }
+    </style>
+    <script>
+        <!-- 클릭 시 yes/no 물어보는 confirm창 띄우기 -->
+        $(function(){
+            $('.check').click(function(){
+                var flag = confirm('continue?');
+                if(flag==true){
+                    return true
+                }else{
+                    return false;
+                }
+            })
+        })
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <!-- 게시물 작성자id와 로그인한 id가 일치할 경우 수정 삭제 버튼 보이는 if -->
+            {% if content.mid == request.session.mid %}
+            <button type="button"><a href="/bbs/content/bbs_update?id={{content.id}}" class="abtn">update</a></button>
+            <button type="button" class="check"><a href="/bbs/content/bbs_delete?id={{content.id}}" class="abtn">delete</a></button>
+            {% else %}
+            {% endif %}
+            <table border="1" width="100%" height="500">
+                <tr>
+                    <td colspan="3" height="50">{{content.title}}</td>
+                </tr>
+                <tr>
+                    <td height="50">{{content.user_nick}}</td><td>{{content.country}}</td><td>{{content.udate}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" id="content_style"><br>{{content.content}}</td>
+                </tr>
+            </table>
+            <!-- 로그인한 사람만 댓글 작성할 수 있게 if -->
+            {% if request.session.mid == None %}
+            {% else %}
+            <table width="100%" height="80">
+                <form action="/bbs/content/review" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="oid" value="{{content.id}}">
+                    <tr>
+                        <td colspan="2"><textarea class="textarea_style" name="review_content"></textarea></td>
+                        <td width="10%" align="center"><input type="submit" value="comment"></td>
+                    </tr>
+                </form>
+            </table>
+            {% endif %}
+            <table border="1" width="100%">
+                <!-- 댓글 리스트 가져오기 -->
+                {% for reviews in review %}
+                    <!-- 넘겨준 flag값과 댓글id가 같은 경우 해당 댓글 form을  바꾸기(댓글 수정) -->
+                    {% if flag == reviews.id %}
+                    <form action="/bbs/content/do_review_update" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="oid" value="{{content.id}}">
+                        <input type="hidden" name="id" value="{{reviews.id}}">
+                    <tr>
+                        <th>NickName</th>
+                        <td>{{ reviews.user_nick }}</td>
+                        <th>Update</th>
+                        <td>{{ reviews.udate }}</td>
+                        <td align="center" width="75" style="padding:0">
+                                <button type="submit" style="padding:0">Done</a></button>
+                                <button type="button" style="padding:0"><a href="/bbs/content/{{reviews.oid}}/0" class="abtn">Cancel</a></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" width="100%"><textarea class="textarea_style" name="review_content">{{ reviews.review_content }}</textarea></td>
+                    </tr>
+                    </form>
+                    <!-- flag가 default(0)일 때는 전부 읽기전용 form -->
+                    {% else %}
+                    <tr>
+                        <th>NickName</th>
+                        <td>{{ reviews.user_nick }}</td>
+                        <th>Update</th>
+                        <!-- 댓글 작성자id와 로그인 id와 같은 경우만 댓글 수정삭제 버튼 생성 -->
+                        {% if reviews.mid == request.session.mid %}
+                        <td>{{ reviews.udate }}</td>
+                        <td align="center" width="75" style="padding:0">
+                            <button type="button" style="padding:0"><a href="/bbs/content/review_update?id={{reviews.id}}&oid={{reviews.oid}}" class="abtn">Update</a></button>
+                            <button type="button" class="check" style="padding:0"><a href="/bbs/content/review_delete?id={{reviews.id}}&oid={{reviews.oid}}" class="abtn">Delete</a></button>
+                        </td>
+                        {% else %}
+                        <td colspan="2">{{ reviews.udate }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td colspan="5" width="100%">{{ reviews.review_content }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}
