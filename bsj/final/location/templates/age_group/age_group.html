@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block script %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(drawChart0);
+    function drawChart0() {
+        var data0 = new google.visualization.DataTable();
+        data0.addColumn('string', 'age_arange');
+        data0.addColumn('number', 'age_total');
+        data0.addRows([
+        ['{{total_age.0.age_arange}}', {{total_age.0.age_total__sum}}],
+        ['{{total_age.1.age_arange}}', {{total_age.1.age_total__sum}}],
+        ['{{total_age.2.age_arange}}', {{total_age.2.age_total__sum}}],
+        ['{{total_age.3.age_arange}}', {{total_age.3.age_total__sum}}],
+        ['{{total_age.4.age_arange}}', {{total_age.4.age_total__sum}}],
+        ['{{total_age.5.age_arange}}', {{total_age.5.age_total__sum}}],
+        ['{{total_age.6.age_arange}}', {{total_age.6.age_total__sum}}],
+        ['{{total_age.7.age_arange}}', {{total_age.7.age_total__sum}}],
+        ['{{total_age.8.age_arange}}', {{total_age.8.age_total__sum}}],
+        ['other countrie', {{total_age_arange}}]
+        ]);
+    var options0 = {
+        'title': 'Location(Age) by male and Female',
+        'width': 1200,
+        'height': 500};
+    var chart0 = new google.visualization.PieChart(document.getElementById('total'));
+    chart0.draw(data0, options0);
+    var selctHandler = function () {
+        var selectedItem = chart0.getSelection()[0];
+        var value = data0.getValue(selectedItem.row, 0);
+        // alert('선택한 나라는' + value + '입니다');
+    };
+    google.visualization.events.addListener(chart0, 'select', selctHandler);
+    }
+    $(document).ready(function () {
+        $('#btn').click(function () {
+            drawChart();
+        });
+    });
+    </script>
+
+<script type="text/javascript">
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'age_arange');
+        data.addColumn('number', 'age_total');
+        data.addRows([
+            ['{{age_m.0.age_arange}}', {{age_m.0.age_total}}],
+            ['{{age_m.1.age_arange}}', {{age_m.1.age_total}}],
+            ['{{age_m.2.age_arange}}', {{age_m.2.age_total}}],
+            ['{{age_m.3.age_arange}}', {{age_m.3.age_total}}],
+            ['{{age_m.4.age_arange}}', {{age_m.4.age_total}}],
+            ['{{age_m.5.age_arange}}', {{age_m.5.age_total}}],
+            ['{{age_m.6.age_arange}}', {{age_m.6.age_total}}],
+            ['{{age_m.7.age_arange}}', {{age_m.7.age_total}}],
+            ['{{age_m.8.age_arange}}', {{age_m.8.age_total}}],
+            ['other_countries', {{age_m_sum}}]
+            ]);
+        // Set chart options
+        var options = {
+            'title': 'Location(Ages) by male',
+            'width': 500,
+            'height': 500};
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('male_char'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(drawChart1);
+    function drawChart1() {
+        var data1 = new google.visualization.DataTable();
+        data1.addColumn('string', 'age_arrange');
+        data1.addColumn('number', 'age_total');
+        data1.addRows([
+            ['{{age_f.0.age_arange}}', {{age_f.0.age_total}}],
+            ['{{age_f.1.age_arange}}', {{age_f.1.age_total}}],
+            ['{{age_f.2.age_arange}}', {{age_f.2.age_total}}],
+            ['{{age_f.3.age_arange}}', {{age_f.3.age_total}}],
+            ['{{age_f.4.age_arange}}', {{age_f.4.age_total}}],
+            ['{{age_f.5.age_arange}}', {{age_f.5.age_total}}],
+            ['{{age_f.6.age_arange}}', {{age_f.6.age_total}}],
+            ['{{age_f.7.age_arange}}', {{age_f.7.age_total}}],
+            ['{{age_f.8.age_arange}}', {{age_f.8.age_total}}],
+            ['other_countries', {{age_f_sum}}]
+            ]);
+        // Set chart options
+        var options1 = {
+            'title': 'Location(VISA) by female',
+            'width': 500,
+            'height': 500};
+        // Instantiate and draw our chart, passing in some options.
+        var chart1 = new google.visualization.PieChart(document.getElementById('female_char'));
+        chart1.draw(data1, options1);
+    }
+</script>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-2">
+        <a href="/location/{{age_m.0.location}}">country_group</a><br>
+        <a href="/location/visa_group/{{age_m.0.location}}">visa_group</a><br>
+        <a href="/location/{{age_m.0.location}}">age_group</a><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+    <div class="col-md-8 panel panel-default">
+        <div style="position: absolute">
+
+            <div id="total" style="float: left"></div>
+            <div id="male_char" style="float: left"></div>
+            <div id="female_char" style="float: left"></div>
+
+        </div>
+    </div>
+    <div class="col-md-2">
+</div>
+{% endblock %}

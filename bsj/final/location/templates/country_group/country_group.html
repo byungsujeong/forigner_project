@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+ {% block script %}
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+     <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart0);
+      function drawChart0() {
+        var data0 = new google.visualization.DataTable();
+        data0.addColumn('string', 'country');
+        data0.addColumn('number', 'country_total');
+        data0.addRows([
+            ['{{total_data.0.country}}', {{total_data.0.country_total__sum}}],
+            ['{{total_data.1.country}}', {{total_data.1.country_total__sum}}],
+            ['{{total_data.2.country}}', {{total_data.2.country_total__sum}}],
+            ['{{total_data.3.country}}', {{total_data.3.country_total__sum}}],
+            ['{{total_data.4.country}}', {{total_data.4.country_total__sum}}],
+            ['{{total_data.5.country}}', {{total_data.5.country_total__sum}}],
+            ['{{total_data.6.country}}', {{total_data.6.country_total__sum}}],
+            ['{{total_data.7.country}}', {{total_data.7.country_total__sum}}],
+            ['{{total_data.8.country}}', {{total_data.8.country_total__sum}}],
+            ['other countries', {{total_countries}}]
+        ]);
+      var options0 = {'title':'Location(countries) by male and Female',
+              'width':1200,
+              'height':500};
+      var chart0 = new google.visualization.PieChart(document.getElementById('total'));
+      chart0.draw(data0, options0);
+      var selctHandler = function () {
+          var selectedItem = chart0.getSelection()[0];
+          var value = data0.getValue(selectedItem.row, 0);
+          if ( value == "other countries" ) {
+                } else {
+                    location.href = "/visit/?country="+value+"&yyyy=2017"
+          }
+      };
+            google.visualization.events.addListener(chart0,'select',selctHandler);
+      }
+         $(document).ready(function () {
+             $('#btn').click(function () {
+                 drawChart();
+             });
+         });
+    </script>
+
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'country');
+        data.addColumn('number', 'country_total');
+        data.addRows([
+            ['{{gender_m.0.country}}', {{gender_m.0.country_total}}],
+            ['{{gender_m.1.country}}', {{gender_m.1.country_total}}],
+            ['{{gender_m.2.country}}', {{gender_m.2.country_total}}],
+            ['{{gender_m.3.country}}', {{gender_m.3.country_total}}],
+            ['{{gender_m.4.country}}', {{gender_m.4.country_total}}],
+            ['{{gender_m.5.country}}', {{gender_m.5.country_total}}],
+            ['{{gender_m.6.country}}', {{gender_m.6.country_total}}],
+            ['{{gender_m.7.country}}', {{gender_m.7.country_total}}],
+            ['other_countries', {{gender_m_sum}}]
+        ]);
+        // Set chart options
+        var options = {'title':'Location(countries) by male',
+                       'width':500,
+                       'height':500};
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('male_char'));
+        chart.draw(data, options);
+      }
+    </script>
+
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart1);
+      function drawChart1() {
+        var data1 = new google.visualization.DataTable();
+        data1.addColumn('string', 'country');
+        data1.addColumn('number', 'country_total');
+        data1.addRows([
+            ['{{gender_f.0.country}}', {{gender_f.0.country_total}}],
+            ['{{gender_f.1.country}}', {{gender_f.1.country_total}}],
+            ['{{gender_f.2.country}}', {{gender_f.2.country_total}}],
+            ['{{gender_f.3.country}}', {{gender_f.3.country_total}}],
+            ['{{gender_f.4.country}}', {{gender_f.4.country_total}}],
+            ['{{gender_f.5.country}}', {{gender_f.5.country_total}}],
+            ['{{gender_f.6.country}}', {{gender_f.6.country_total}}],
+            ['{{gender_f.7.country}}', {{gender_f.7.country_total}}],
+            ['{{gender_f.8.country}}', {{gender_f.8.country_total}}],
+            ['other_countries', {{gender_f_sum}}]
+        ]);
+        // Set chart options
+        var options1 = {'title':'Location(countries) by female',
+                       'width':500,
+                       'height':500};
+        // Instantiate and draw our chart, passing in some options.
+        var chart1 = new google.visualization.PieChart(document.getElementById('female_char'));
+        chart1.draw(data1, options1);
+      }
+    </script>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-2">
+        <a href="/location/{{gender_m.0.location}}">country_group</a><br>
+        <a href="/location/visa_group/{{gender_m.0.location}}">visa_group</a><br>
+        <a href="/location/age_group/{{gender_m.0.location}}">age_group</a><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+    <div class="col-md-8 panel panel-default">
+        <table align="center">
+            <tr>
+                <td align="center">
+                    <form action="/visit/">
+                        <select name="country">
+
+                            {% for country in country_list %}
+                            <option value="{{country.country}}">{{country.country}}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" name="yyyy" value="2017">
+                        <input type="submit" value="이동">
+                    </form>
+                </td>
+            </tr>
+        </table>
+        <div style="position: absolute">
+            <div id="total" style="float: left"></div>
+            <div id="male_char" style="float: left"></div>
+            <div id="female_char" style="float: left"></div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+{% endblock %}
